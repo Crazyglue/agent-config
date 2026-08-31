@@ -97,6 +97,14 @@ Entry point for the topic. Required structure:
 
 Reference docs. Each must be linked from `_overview.md`. **If it's not linked, it doesn't exist.**
 
+#### QMD context for new wiki topics
+
+Whenever you add a new wiki topic, also run `qmd context add qmd://vault/wiki/<topic> "<context>"`, where `<context>` is exactly one concise sentence describing the knowledge contained across that topic; add context only at the topic-directory level, never per file. (This assumes a qmd collection named `vault` rooted at the vault; adjust the URI prefix if yours differs.)
+
+#### QMD indexing after wiki changes
+
+After adding or modifying any wiki files, automatically run `qmd update && qmd embed` once after all wiki changes for the session are complete; do not wait for the user to ask.
+
 ---
 
 ## Eager distillation (the core operation)
@@ -120,9 +128,10 @@ Every qualifying session **must** end with a wiki update. This is non-negotiable
 2. For each affected topic:
    - Update or create the relevant detail page(s).
    - Update the topic's `_overview.md` (link new files; revise descriptions if scope changed).
-3. If a new topic was created, update `master-index.md`.
-4. Record what changed in the session memo's `wiki-delta` section and front-matter.
-5. Distillation is **distillation**, not transcript copy-paste. Wiki entries should read like reference docs — bullet lists, tables, short prose. Strip narrative.
+3. If a new topic was created, update `master-index.md` and run `qmd context add qmd://vault/wiki/<topic> "<context>"` (one sentence).
+4. Once all wiki changes for the session are complete, run `qmd update && qmd embed` to re-index.
+5. Record what changed in the session memo's `wiki-delta` section and front-matter.
+6. Distillation is **distillation**, not transcript copy-paste. Wiki entries should read like reference docs — bullet lists, tables, short prose. Strip narrative.
 
 ### File-back: query results become wiki pages
 
